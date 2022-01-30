@@ -1,0 +1,29 @@
+- apiVersion: batch/v1
+  kind: Job
+  metadata:
+    name: <job-name>
+    namespace: <namespace-name>
+  spec:
+    backoffLimit: 1
+    completions: 1
+    parallelism: 1
+    template:
+      spec:
+        nodeSelector:
+          agentpool: agentpool
+        containers:
+          - env:
+              - name: AZURE_SERVICE_BUS_CONNECTION_STRING
+                valueFrom:
+                  secretKeyRef:
+                    key: AZURE_SERVICE_BUS_CONNECTION_STRING
+                    name: <secret-name>
+              - name: AZURE_SERVICE_BUS_QUEUE
+                value: <servicebus-queue-name>
+              - name: JAVA_TOOL_OPTIONS
+                value: '-XX:+FlightRecorder -XX:StartFlightRecording=settings=profile,filename=jfr_rec.jfr -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.rmi.port=1099 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false -Djava.rmi.server.hostname=localhost'
+            image: <image-path>
+            args: ["--scenario=<scenario-name>"]
+            imagePullPolicy: Always
+            name: <container-name>
+        restartPolicy: Never
