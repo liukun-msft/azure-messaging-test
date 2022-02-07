@@ -4,6 +4,7 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.servicebus.util.Constants;
+import com.azure.servicebus.util.Credentials;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +17,10 @@ public class SendSimpleMessage extends ServiceBusScenario {
 
     @Override
     public void run() {
-        String connectionString = System.getenv(Constants.AZURE_SERVICE_BUS_CONNECTION_STRING);
-        String queueName = System.getenv(Constants.AZURE_SERVICE_BUS_QUEUE);
-
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-                .connectionString(connectionString)
+                .connectionString(Credentials.serviceBusConnectionString)
                 .sender()
-                .queueName(queueName)
+                .queueName(Credentials.serviceBusQueue)
                 .buildClient();
 
         List<ServiceBusMessage> messages = Arrays.asList(

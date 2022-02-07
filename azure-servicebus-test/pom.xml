@@ -16,7 +16,7 @@
 
 
     <properties>
-        <servicebusVersion>7.4.0</servicebusVersion>
+        <servicebusVersion>7.4.2</servicebusVersion>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
