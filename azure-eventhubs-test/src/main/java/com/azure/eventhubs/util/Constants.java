@@ -7,4 +7,7 @@ public class Constants {
 
     public static final String AZURE_STORAGE_CONNECTION_STRING = "AZURE_STORAGE_CONNECTION_STRING";
     public static final String AZURE_STORAGE_CONTAINER = "AZURE_STORAGE_CONTAINER";
+
+    public static final String PROXY_USER_NAME= "PROXY_USER_NAME";
+    public static final String PROXY_PASSWORD = "PROXY_PASSWORD";
 }

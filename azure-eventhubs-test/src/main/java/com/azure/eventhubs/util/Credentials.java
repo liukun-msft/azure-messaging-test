@@ -12,6 +12,8 @@ public class Credentials {
     public static String eventHub;
     public static String storageConnectionString;
     public static String storageContainer;
+    public static String proxyUserName;
+    public static String proxyPassword;
 
     /*
       setCredential() will set credentials from system env first.
@@ -22,6 +24,9 @@ public class Credentials {
         eventHub = Objects.requireNonNullElse(System.getenv(Constants.AZURE_EVENT_HUB), environment.getProperty(Constants.AZURE_EVENT_HUB));
         storageConnectionString = Objects.requireNonNullElse(System.getenv(Constants.AZURE_STORAGE_CONNECTION_STRING), environment.getProperty(Constants.AZURE_STORAGE_CONNECTION_STRING));
         storageContainer = Objects.requireNonNullElse(System.getenv(Constants.AZURE_STORAGE_CONTAINER), environment.getProperty(Constants.AZURE_STORAGE_CONTAINER));
+        proxyUserName = Objects.requireNonNullElse(System.getenv(Constants.PROXY_USER_NAME), environment.getProperty(Constants.PROXY_USER_NAME));
+        proxyPassword = Objects.requireNonNullElse(System.getenv(Constants.PROXY_PASSWORD), environment.getProperty(Constants.PROXY_PASSWORD));
+
     }
 
 }
