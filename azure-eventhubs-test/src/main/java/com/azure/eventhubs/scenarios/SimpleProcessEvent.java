@@ -28,6 +28,8 @@ public class SimpleProcessEvent extends EventHubsScenario{
                 .processEvent(eventContext -> {
                     System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
                             + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+                    //Update check point
+                    eventContext.updateCheckpoint();
                 })
                 .processError(errorContext -> {
                     System.out
@@ -42,7 +44,6 @@ public class SimpleProcessEvent extends EventHubsScenario{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         eventProcessorClient.stop();
     }
