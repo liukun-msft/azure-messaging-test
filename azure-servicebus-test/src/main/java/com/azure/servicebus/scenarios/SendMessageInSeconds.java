@@ -25,7 +25,7 @@ public class SendMessageInSeconds extends ServiceBusScenario {
                 .buildClient();
 
         List<ServiceBusMessage> messages = Arrays.asList(
-                new ServiceBusMessage("Hello world").setMessageId("1"));
+                new ServiceBusMessage("Hello world").setMessageId("2"));
 
         for(int i = 0; i < 300; i++){
             sender.sendMessages(messages);
