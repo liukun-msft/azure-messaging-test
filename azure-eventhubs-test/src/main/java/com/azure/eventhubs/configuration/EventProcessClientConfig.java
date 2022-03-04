@@ -18,9 +18,10 @@ import java.util.List;
 import java.util.function.Consumer;
 
 @Configuration
-@Lazy
+
 public class EventProcessClientConfig {
 
+    @Lazy
     @Bean
     public EventProcessorClient eventOfferUpProcessorClient() {
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
@@ -37,6 +38,7 @@ public class EventProcessClientConfig {
                 .buildEventProcessorClient();
     }
 
+    @Lazy
     @Bean
     public EventProcessorClient eventOfferNewProcessorClient() {
 
