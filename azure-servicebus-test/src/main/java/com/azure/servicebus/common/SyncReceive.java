@@ -1,21 +1,18 @@
-package com.azure.servicebus.scenarios;
+package com.azure.servicebus.common;
 
 import com.azure.core.util.IterableStream;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.servicebus.util.Credentials;
-import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
-@Service("PrefetchReceiveMessage")
-public class PrefetchReceiveMessage  extends ServiceBusScenario{
+public class SyncReceive {
     private static final int NUMBER_TO_RECEIVE = 10;
 
-    @Override
-    public void run() {
+    public static void main(String[] args) {
+
         final ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
                 .connectionString(Credentials.serviceBusConnectionString)
                 .receiver()
@@ -26,7 +23,7 @@ public class PrefetchReceiveMessage  extends ServiceBusScenario{
 
         try {
             int count = 1;
-            for(int i = 0; i < 3; i++){
+            for (int i = 0; i < 1; i++) {
                 IterableStream<ServiceBusReceivedMessage> messages = receiver.receiveMessages(NUMBER_TO_RECEIVE);
                 for (ServiceBusReceivedMessage message : messages) {
                     System.out.printf("count[%s] messageId[%s] %n", count, message.getMessageId());
@@ -36,10 +33,9 @@ public class PrefetchReceiveMessage  extends ServiceBusScenario{
                 }
                 System.out.println("---- ENDING  ----");
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
-
 
         receiver.close();
     }

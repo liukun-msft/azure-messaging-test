@@ -1,18 +1,18 @@
-package com.azure.servicebus.scenarios;
+package com.azure.servicebus.common;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.servicebus.util.Credentials;
-import org.springframework.stereotype.Service;
 
 import java.util.function.Consumer;
 
-@Service("ReceiveAndPrintMessage")
-public class ReceiveAndPrintMessage extends ServiceBusScenario {
-    @Override
-    public void run() {
+public class ProcessMessages {
+
+    public static void main(String[] args) {
+
+
         Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
             try {
                 System.out.println(messageContext.getMessage().getMessageId());

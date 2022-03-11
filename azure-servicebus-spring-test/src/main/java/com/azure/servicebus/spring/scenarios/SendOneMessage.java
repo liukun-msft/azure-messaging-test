@@ -1,19 +1,17 @@
-package com.azure.servicebus.scenarios;
+package com.azure.servicebus.spring.scenarios;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
-import com.azure.servicebus.util.Constants;
-import com.azure.servicebus.util.Credentials;
-import org.springframework.context.annotation.Bean;
+import com.azure.servicebus.spring.util.Credentials;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
 
 
-@Service("SendSimpleMessage")
-public class SendSimpleMessage extends ServiceBusScenario {
+@Service("SendOneMessage")
+public class SendOneMessage extends ServiceBusScenario {
 
     @Override
     public void run() {

@@ -1,35 +1,31 @@
-package com.azure.servicebus.scenarios;
+package com.azure.servicebus.common;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
-import com.azure.servicebus.util.CmdlineArgs;
 import com.azure.servicebus.util.Credentials;
-import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
+public class SendMessages {
 
-@Service("SendMessageInSeconds")
-public class SendMessageInSeconds extends ServiceBusScenario {
+    private static final int SEND_MESSAGE_NUMBER = 40;
 
-    @Override
-    public void run() {
-        String queue = cmdlineArgs.get("queue");
-
+    public static void main(String[] args) {
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
                 .connectionString(Credentials.serviceBusConnectionString)
                 .sender()
-                .queueName(queue)
+                .queueName(Credentials.serviceBusQueue)
                 .buildClient();
 
-        List<ServiceBusMessage> messages = Arrays.asList(
-                new ServiceBusMessage("Hello world").setMessageId("2"));
 
-        for(int i = 0; i < 300; i++){
+        for(int i = 0; i < SEND_MESSAGE_NUMBER; i++){
+            List<ServiceBusMessage> messages = List.of(
+                    new ServiceBusMessage("Hello world").setMessageId("" + i));
+
             sender.sendMessages(messages);
 
+            System.out.println("Send Message id: " + i);
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {

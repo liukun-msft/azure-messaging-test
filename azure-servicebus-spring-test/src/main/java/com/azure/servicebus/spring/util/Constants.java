@@ -1,4 +1,4 @@
-package com.azure.servicebus.util;
+package com.azure.servicebus.spring.util;
 
 public class Constants {
 

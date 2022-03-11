@@ -1,9 +1,9 @@
-package com.azure.servicebus;
+package com.azure.servicebus.spring;
 
-import com.azure.servicebus.scenarios.ServiceBusScenario;
-import com.azure.servicebus.util.CmdlineArgs;
-import com.azure.servicebus.util.Constants;
-import com.azure.servicebus.util.Credentials;
+import com.azure.servicebus.spring.scenarios.ServiceBusScenario;
+import com.azure.servicebus.spring.util.CmdlineArgs;
+import com.azure.servicebus.spring.util.Constants;
+import com.azure.servicebus.spring.util.Credentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;

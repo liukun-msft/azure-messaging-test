@@ -4,11 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.2</version>
-    </parent>
 
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-test</artifactId>
@@ -22,6 +17,8 @@
     <modules>
         <module>azure-eventhubs-test</module>
         <module>azure-servicebus-test</module>
+        <module>azure-servicebus-spring-test</module>
+        <module>azure-eventhubs-spring-test</module>
     </modules>
 
 </project>

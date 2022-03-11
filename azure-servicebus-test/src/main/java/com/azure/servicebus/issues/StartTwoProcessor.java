@@ -1,21 +1,19 @@
-package com.azure.servicebus.scenarios;
+package com.azure.servicebus.issues;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.servicebus.util.Credentials;
-import org.springframework.stereotype.Service;
 
 import java.util.function.Consumer;
 
-@Service("StartTwoProcessor")
-public class StartTwoProcessor extends ServiceBusScenario {
 
-    @Override
-    public void run() {
-        String queue1 = cmdlineArgs.get("queue1");
-        String queue2 = cmdlineArgs.get("queue2");
+public class StartTwoProcessor {
+
+    public static void main(String[] args) {
+        String queue1 = args[0];
+        String queue2 = args[1];
 
         Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
             try {
@@ -52,5 +50,6 @@ public class StartTwoProcessor extends ServiceBusScenario {
         processorClient1.start();
         processorClient2.start();
     }
+
 }
 

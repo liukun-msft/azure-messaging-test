@@ -1,23 +1,20 @@
-package com.azure.servicebus.scenarios;
+package com.azure.servicebus.issues;
 
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.servicebus.util.Credentials;
-import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-@Service("SyncReceiveThrows")
-public class SyncReceiveThrows extends ServiceBusScenario{
+
+public class SyncReceiveWithException {
     private static final int NUMBER_TO_RECEIVE = 10;
 
-    @Override
-    public void run() {
-
+    public static void main(String[] args) {
         final AtomicInteger counter = new AtomicInteger();
 
         final ServiceBusReceiverClient receiver = new ServiceBusClientBuilder()
@@ -30,6 +27,11 @@ public class SyncReceiveThrows extends ServiceBusScenario{
 
         int rounds = 100;
         for (int i = 0; i < rounds; i++) {
+//            try {
+//                TimeUnit.SECONDS.sleep(3);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
             final Thread thread = createNewThread(i, receiver, counter);
             thread.start();
 
@@ -42,7 +44,8 @@ public class SyncReceiveThrows extends ServiceBusScenario{
         }
     }
 
-    private Thread createNewThread(int round, ServiceBusReceiverClient receiver, AtomicInteger counter) {
+
+    private static Thread createNewThread(int round, ServiceBusReceiverClient receiver, AtomicInteger counter) {
         return new Thread(() -> {
             System.out.println("---- CREATING " + round + " ----");
             for (ServiceBusReceivedMessage message : receiver.receiveMessages(NUMBER_TO_RECEIVE)) {

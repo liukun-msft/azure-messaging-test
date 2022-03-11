@@ -1,4 +1,4 @@
-package com.azure.servicebus.util;
+package com.azure.servicebus.spring.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
