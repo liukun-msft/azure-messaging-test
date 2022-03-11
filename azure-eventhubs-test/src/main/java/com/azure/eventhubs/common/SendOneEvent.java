@@ -1,19 +1,17 @@
-package com.azure.eventhubs.scenarios;
+package com.azure.eventhubs.common;
 
 import com.azure.eventhubs.util.Credentials;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
-import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
 
-@Service("SendSimpleEvent")
-public class SendSimpleEvent extends EventHubsScenario {
-    @Override
-    public void run() {
+
+public class SendOneEvent {
+    public static void main(String[] args) {
         EventHubProducerClient producer = new EventHubClientBuilder()
                 .connectionString(Credentials.eventHubsConnectionString, Credentials.eventHub)
                 .buildProducerClient();
@@ -37,6 +35,4 @@ public class SendSimpleEvent extends EventHubsScenario {
         producer.send(batch);
         producer.close();
     }
-
-
 }

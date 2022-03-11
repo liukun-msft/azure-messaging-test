@@ -1,4 +1,4 @@
-package com.azure.eventhubs.util;
+package com.azure.eventhubs.spring.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;

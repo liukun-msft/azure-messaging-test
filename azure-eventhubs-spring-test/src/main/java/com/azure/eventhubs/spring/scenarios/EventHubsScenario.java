@@ -1,7 +1,7 @@
-package com.azure.eventhubs.scenarios;
+package com.azure.eventhubs.spring.scenarios;
 
 
-import com.azure.eventhubs.util.CmdlineArgs;
+import com.azure.eventhubs.spring.util.CmdlineArgs;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public abstract class EventHubsScenario {

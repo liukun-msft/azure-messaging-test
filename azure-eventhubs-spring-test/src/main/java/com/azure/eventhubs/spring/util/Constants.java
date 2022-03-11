@@ -1,4 +1,4 @@
-package com.azure.eventhubs.util;
+package com.azure.eventhubs.spring.util;
 
 public class Constants {
     public static final String SCENARIO_OPTION = "scenario";

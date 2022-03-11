@@ -1,9 +1,9 @@
-package com.azure.eventhubs;
+package com.azure.eventhubs.spring;
 
-import com.azure.eventhubs.scenarios.EventHubsScenario;
-import com.azure.eventhubs.util.CmdlineArgs;
-import com.azure.eventhubs.util.Constants;
-import com.azure.eventhubs.util.Credentials;
+import com.azure.eventhubs.spring.scenarios.EventHubsScenario;
+import com.azure.eventhubs.spring.util.CmdlineArgs;
+import com.azure.eventhubs.spring.util.Constants;
+import com.azure.eventhubs.spring.util.Credentials;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -13,7 +13,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 
 import javax.annotation.PostConstruct;
-import javax.swing.plaf.synth.SynthTextAreaUI;
 import java.util.Objects;
 
 

@@ -15,7 +15,7 @@
         </EventHubRestSyncAppender>
     </Appenders>
     <Loggers>
-<!--        <Logger name="com.azure.eventhubs.issues.EventHubRestSyncAppender" level="info" additivity="false">-->
+<!--        <Logger name="com.azure.eventhubs.spring.issues.EventHubRestSyncAppender" level="info" additivity="false">-->
 <!--            <AppenderRef ref="Console"/>-->
 <!--            <AppenderRef ref="EventHubRestSyncAppender"/>-->
 <!--        </Logger>-->

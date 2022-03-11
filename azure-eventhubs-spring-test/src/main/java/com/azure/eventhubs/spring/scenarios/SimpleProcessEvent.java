@@ -1,6 +1,6 @@
-package com.azure.eventhubs.scenarios;
+package com.azure.eventhubs.spring.scenarios;
 
-import com.azure.eventhubs.util.Credentials;
+import com.azure.eventhubs.spring.util.Credentials;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;

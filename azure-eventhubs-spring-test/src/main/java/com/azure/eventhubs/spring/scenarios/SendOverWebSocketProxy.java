@@ -1,9 +1,9 @@
-package com.azure.eventhubs.scenarios;
+package com.azure.eventhubs.spring.scenarios;
 
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.eventhubs.util.Credentials;
+import com.azure.eventhubs.spring.util.Credentials;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
@@ -17,12 +17,20 @@ import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-@Service("SendOverWebSocket")
-public class SendOverWebSocket extends EventHubsScenario{
+@Service("SendOverWebSocketProxy")
+public class SendOverWebSocketProxy extends EventHubsScenario{
     @Override
     public void run() {
+        final String proxyAddress = cmdlineArgs.get("address");
+        final int proxyPort = Integer.parseInt(cmdlineArgs.get("port"));
+
+        ProxyOptions proxyOptions = new ProxyOptions(ProxyAuthenticationType.BASIC,
+                new Proxy(Proxy.Type.HTTP, InetSocketAddress.createUnresolved(proxyAddress, proxyPort)),
+                Credentials.proxyUserName, Credentials.proxyPassword);
+
         EventHubProducerClient producer = new EventHubClientBuilder()
                 .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+                .proxyOptions(proxyOptions)
                 .connectionString(Credentials.eventHubsConnectionString, Credentials.eventHub)
                 .buildProducerClient();
 

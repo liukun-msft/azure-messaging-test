@@ -1,4 +1,4 @@
-package com.azure.eventhubs.issues;
+package com.azure.eventhubs.spring.issues;
 
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
