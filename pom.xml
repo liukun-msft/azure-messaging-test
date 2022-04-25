@@ -19,6 +19,7 @@
         <module>azure-servicebus-test</module>
         <module>azure-servicebus-spring-test</module>
         <module>azure-eventhubs-spring-test</module>
+        <module>azure-eventhubs-aks-test</module>
     </modules>
 
 </project>

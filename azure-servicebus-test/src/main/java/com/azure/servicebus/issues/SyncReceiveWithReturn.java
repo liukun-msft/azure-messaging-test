@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-public class SyncReceiveWithException {
+public class SyncReceiveWithReturn {
     private static final int NUMBER_TO_RECEIVE = 10;
 
     public static void main(String[] args) {
@@ -21,6 +21,7 @@ public class SyncReceiveWithException {
                 .connectionString(Credentials.serviceBusConnectionString)
                 .receiver()
                 .disableAutoComplete()
+                .maxAutoLockRenewDuration(Duration.ZERO)
                 .queueName(Credentials.serviceBusQueue)
                 .buildClient();
 
@@ -49,16 +50,10 @@ public class SyncReceiveWithException {
                 System.out.printf("round[%d] #[%d] messageId[%s] %n", round, i, message.getMessageId());
 
                 if (i % 12 == 0) {
-                    throw new IllegalStateException("Test error occurs. index: " + i);
+                    System.out.println("Stop iterator by break");
+                    break;
                 }
-
-                try {
-                    TimeUnit.MICROSECONDS.sleep(100);
-                } catch (InterruptedException e) {
-                    System.out.println("---> Unable to sleep. Error: " + e);
-                } finally {
-                    receiver.complete(message);
-                }
+                receiver.complete(message);
             }
             System.out.println("---- ENDING " + round + " ----");
         });
