@@ -1,4 +1,4 @@
-# Azure Event Hubs Test on AKS
+# Azure Event Hubs Stress Test
 
 ## Run locally
 

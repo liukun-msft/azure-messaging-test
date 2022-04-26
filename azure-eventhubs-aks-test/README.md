@@ -84,5 +84,5 @@ spec:
 Submit job
 
 ```shell
-kubectl create -f testjob.yaml
+kubectl create -f job.yaml
 ```
