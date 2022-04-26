@@ -1,0 +1,20 @@
+{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.event-hubs") -}}
+{{- define "stress.event-hubs" -}}
+metadata:
+  labels:
+    testName: "event-hubs-send"
+spec:
+  containers:
+    - name: event-hubs-send
+      image: '<registry server host name>/<your username>/<test job image name>'
+      imagePullPolicy: Always
+      args: [ "--TEST_CLASS=SendSimpleEvent" ]
+      env:
+        - name: EVENT_HUBS_CONNECTION_STRING
+          valueFrom:
+            secretKeyRef:
+              key: EVENT_HUBS_CONNECTION_STRING
+              name: event-hubs-secret
+        - name: EVENT_HUB_NAME
+          value: eventhub-test
+{{- end -}}
