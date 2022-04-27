@@ -1,4 +1,4 @@
-{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.event-hubs") -}}
+{{- include "stress-test-addons.env-job-template.from-pod" (list . "stress.event-hubs") -}}
 {{- define "stress.event-hubs" -}}
 metadata:
   labels:
