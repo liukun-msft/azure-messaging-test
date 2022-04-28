@@ -2,11 +2,11 @@
 {{- define "stress.event-hubs" -}}
 metadata:
   labels:
-    testName: "event-hubs-send"
+    testName: "eventhub-{{ .Release.Name }}-{{ .Release.Revision }}"
 spec:
   containers:
-    - name: event-hubs-send
-      image: '<registry server host name>/<your username>/<test job image name>'
+    - name: java-event-hubs-send
+      image: {{ .Values.image }}
       imagePullPolicy: Always
       args: [ "--TEST_CLASS=SendSimpleEvent" ]
       env:
