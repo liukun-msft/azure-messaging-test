@@ -1,20 +1,14 @@
-{{- include "stress-test-addons.env-job-template.from-pod" (list . "stress.event-hubs") -}}
-{{- define "stress.event-hubs" -}}
+{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.java-eventhubs") -}}
+{{- define "stress.java-eventhubs" -}}
 metadata:
   labels:
-    testName: "eventhub-{{ .Release.Name }}-{{ .Release.Revision }}"
+    testName: "java-eventhubs-stress-test"
+    testInstance: "eventhub-{{ .Release.Name }}-{{ .Release.Revision }}"
 spec:
   containers:
-    - name: java-event-hubs-send
+    - name: java-eventhubs-send
       image: {{ .Values.image }}
       imagePullPolicy: Always
       args: [ "--TEST_CLASS=SendSimpleEvent" ]
-      env:
-        - name: EVENT_HUBS_CONNECTION_STRING
-          valueFrom:
-            secretKeyRef:
-              key: EVENT_HUBS_CONNECTION_STRING
-              name: event-hubs-secret
-        - name: EVENT_HUB_NAME
-          value: eventhub-test
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}

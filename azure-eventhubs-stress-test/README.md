@@ -51,8 +51,7 @@ kubectl get pods -n <stress test namespace>
 # List stress test pods
 kubectl get pods -n <stress test namespace> -l release=<stress test name>
 
-# Get logs from the init-azure-deployer init container, if deploying resources. Omit `-c init-azure-deployer` to get main container
-logs.
+# Get logs from the init-azure-deployer init container, if deploying resources. Omit `-c init-azure-deployer` to get main container logs.
 kubectl logs -n <stress test namespace> <stress test pod name> -c init-azure-deployer
 
 # If empty, there may have been startup failures
