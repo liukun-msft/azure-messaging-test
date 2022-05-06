@@ -12,9 +12,20 @@ Add program arguments:
 
 Add environment variables:
 
+```shell
+ENV_FILE=.env
+```
+
+Update src/resources/.env 
 ```sh
 EVENT_HUBS_CONNECTION_STRING="your event hubs connect string" 
 EVENT_HUB_NAME="your event hub name"
+```
+
+## Build project
+
+```
+mvn install
 ```
 
 ## Build docker image

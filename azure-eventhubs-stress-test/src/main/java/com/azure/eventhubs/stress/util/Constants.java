@@ -6,5 +6,5 @@ public class Constants {
     public static final String EVENT_HUB_NAME = "EVENT_HUB_NAME";
 
     public static final String STORAGE_CONNECTION_STRING = "STORAGE_CONNECTION_STRING";
-    public static final String STORAGE_CONTAINER = "STORAGE_CONTAINER";
+    public static final String STORAGE_CONTAINER_NAME = "STORAGE_CONTAINER_NAME";
 }

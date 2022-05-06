@@ -2,13 +2,13 @@
 {{- define "stress.java-eventhubs" -}}
 metadata:
   labels:
-    testName: "java-eventhubs-stress-test"
-    testInstance: "eventhub-{{ .Release.Name }}-{{ .Release.Revision }}"
+    testInstance: "eventhubs-{{ .Stress.Scenario }}-{{ .Release.Name }}-{{ .Release.Revision }}"
+    testName: eventhubs-{{ .Stress.Scenario }}
 spec:
   containers:
-    - name: java-eventhubs-send
+    - name: java-eventhubs-stress-test
       image: {{ .Values.image }}
       imagePullPolicy: Always
-      args: [ "--TEST_CLASS=SendSimpleEvent" ]
+      args: [ "--TEST_CLASS={{ .Stress.Scenario }}" ]
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}

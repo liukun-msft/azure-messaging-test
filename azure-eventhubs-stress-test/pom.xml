@@ -41,6 +41,12 @@
             <artifactId>azure-messaging-eventhubs</artifactId>
             <version>5.11.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
+            <version>1.10.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

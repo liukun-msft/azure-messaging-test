@@ -1,12 +1,12 @@
 apiVersion: v2
-name: event-hubs-example
-description: helm chart of azure event hubs stress test example
+name: java-eventhubs-example
+description: stress test example for azure event hubs in java
 version: 0.1.1
 appVersion: v0.1
 annotations:
   stressTest: 'true'  # enable auto-discovery of this test via `find-all-stress-packages.ps1`
   example: 'true'  # enable auto-discovery filtering `find-all-stress-packages.ps1 -filters @{example='true'}`
-  namespace: '<stress test namespace>' # kubernetes namespace that stress test package will be installed
+  namespace: 'liuku' # kubernetes namespace that stress test package will be installed
 
 dependencies:
   - name: stress-test-addons
