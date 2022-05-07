@@ -2,26 +2,27 @@
 
 ## Run locally
 
-1. Update parameters in file `src/resources/.env`.
+Update parameters in file `src/resources/.env`.
 
-2. Add program argument:
+Add program argument:
 
-    ```shell
-    --TEST_CLASS=SendSimpleEvent
-    ```
+  ```shell
+  --TEST_CLASS=SendSimpleEvent
+  ```
 
-3. Add environment variable:
+Add environment variable:
 
-    ```shell
-    ENV_FILE=.env
-    ```
+  ```shell
+  ENV_FILE=.env
+  ```
 
-4. Start `EventHubsScenarioRunner`.
-
+Start `EventHubsScenarioRunner`.
 
 ## Run on cluster
 
 ### Build project
+
+We should build out an artifact for build docker image.
 
 ```
 cd <current project path>
@@ -106,5 +107,13 @@ This project is build on [azure-sdk-chaos](https://github.com/Azure/azure-sdk-to
 ├── pom.xml
 └── README.md
 ```
+
+### Add Test Scenario
+
+Add a new test class under `\scenarios`. 
+
+Add class name in values.yaml.
+
+Build project and redeploy to cluster.
 
 
