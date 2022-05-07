@@ -2,83 +2,109 @@
 
 ## Run locally
 
-Configure and start `EventHubsScenarioRunner`.
+1. Update parameters in file `src/resources/.env`.
 
-Add program arguments:
+2. Add program argument:
 
-```sh
---TEST_CLASS=SendSimpleEvent
+    ```shell
+    --TEST_CLASS=SendSimpleEvent
+    ```
+
+3. Add environment variable:
+
+    ```shell
+    ENV_FILE=.env
+    ```
+
+4. Start `EventHubsScenarioRunner`.
+
+
+## Run on cluster
+
+### Build project
+
 ```
-
-Add environment variables:
-
-```shell
-ENV_FILE=.env
-```
-
-Update src/resources/.env 
-```sh
-EVENT_HUBS_CONNECTION_STRING="your event hubs connect string" 
-EVENT_HUB_NAME="your event hub name"
-```
-
-## Build project
-
-```
-mvn install
-```
-
-## Build docker image
-
-Install docker desktop
-
-Build local image
-```sh
-docker build . -t "<registry server host name>/<your alias>/<test job image name>:<version>"
-```
-
-Push to registry
-```shell
-docker push "<registry server host name>/<your username>/<test job image name>:<version>"
-```
-
-## Deploy to stress test cluster
-Make sure the powershell version is 7.0 or above. (Win10 default version is 5.1.)
-
-```shell
 cd <current project path>
+mvn clean install
+```
+
+### Deploy to cluster
+
+Make sure you have installed the following tools:
+- [Docker](https://docs.docker.com/get-docker/)
+- [Kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
+- [Helm](https://helm.sh/docs/intro/install/)
+- [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+- [Powershell 7.0+](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7) 
+
+Update the `namespace` field in Chart.yaml file. To avoid conflict, it is suggested to use **your alias**.
+```shell
+name: <stress test name>
+...
+annotations:
+  namespace: <stress test namespace>
+```
+
+Download project [azure-sdk-tools](https://github.com/Azure/azure-sdk-tools), which is used for the deployment.
+
+Keep in current stress test project, run below deployment commands.
+
+```shell
 <root path>\azure-sdk-tools\eng\common\scripts\stress-testing\deploy-stress-tests.ps1 -Login -PushImages
 ```
 
-Validate jobs and pods
+### Validate jobs status
+
+Get pods and jobs 
 
 ```shell
 helm list -n <stress test namespace>
-kubectl get jobs -n <stress test namespace>
 kubectl get pods -n <stress test namespace>
+kubectl get jobs -n <stress test namespace>
 ```
 
+List stress test pods
 ```shell
-# List stress test pods
 kubectl get pods -n <stress test namespace> -l release=<stress test name>
+```
 
-# Get logs from the init-azure-deployer init container, if deploying resources. Omit `-c init-azure-deployer` to get main container logs.
+Get logs from the init-azure-deployer init container, if deploying resources. Omit `-c init-azure-deployer` to get main container logs.
+
+```shell
 kubectl logs -n <stress test namespace> <stress test pod name> -c init-azure-deployer
+```
 
-# If empty, there may have been startup failures
+If above command output is empty, there may have been startup failures
+```shell
 kubectl describe pod -n <stress test namespace> <stress test pod name>
 ```
 
-Get test logs
+Get stress test logs
 ```shell
 kubectl logs -n <stress test namespace> <stress test pod name>
 ```
 
-
-Stop and remove
+Stop and remove deployed package
 ```shell
 helm uninstall <stress test name> -n <stress test namespace>
 ```
 
+## Development
+
+This project is build on [azure-sdk-chaos](https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md). 
+
+### Project Structure
+
+```
+.
+├── src/                         # Test code
+├── templates/                   # A directory of helm templates that will generate Kubernetes manifest files.
+├── Chart.yaml                   # A YAML file containing information about the helm chart and its dependencies
+├── Dockerfile                   # A Dockerfile for building the stress test image
+├── stress-test-resouce.bicep    # An Azure Bicep for deploying stress test azure resources
+├── values.yaml                  # Any default helm template values for this chart, e.g. a `scenarios` list
+├── pom.xml
+└── README.md
+```
 
 
