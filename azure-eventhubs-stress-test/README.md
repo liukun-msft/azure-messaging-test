@@ -1,5 +1,32 @@
 # Azure Event Hubs Stress Test Example
 
+## Development
+
+This project is build on [azure-sdk-chaos](https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md). 
+
+### Project Structure
+
+```
+.
+├── src/                         # Test code
+├── templates/                   # A directory of helm templates that will generate Kubernetes manifest files.
+├── Chart.yaml                   # A YAML file containing information about the helm chart and its dependencies
+├── Dockerfile                   # A Dockerfile for building the stress test image
+├── stress-test-resouce.bicep    # An Azure Bicep for deploying stress test azure resources
+├── values.yaml                  # Any default helm template values for this chart, e.g. a `scenarios` list
+├── pom.xml
+└── README.md
+```
+
+### Add Test Scenario
+
+Add a new test class under `\scenarios`. 
+
+Add class name in values.yaml.
+
+Build project and redeploy to cluster.
+
+
 ## Run locally
 
 Update parameters in file `src/resources/.env`.
@@ -7,7 +34,7 @@ Update parameters in file `src/resources/.env`.
 Add program argument:
 
   ```shell
-  --TEST_CLASS=SendSimpleEvent
+  --TEST_CLASS=<test class name>
   ```
 
 Add environment variable:
@@ -139,30 +166,6 @@ spec:
     correlation: '0'
 ```
 
-## Development
 
-This project is build on [azure-sdk-chaos](https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md). 
-
-### Project Structure
-
-```
-.
-├── src/                         # Test code
-├── templates/                   # A directory of helm templates that will generate Kubernetes manifest files.
-├── Chart.yaml                   # A YAML file containing information about the helm chart and its dependencies
-├── Dockerfile                   # A Dockerfile for building the stress test image
-├── stress-test-resouce.bicep    # An Azure Bicep for deploying stress test azure resources
-├── values.yaml                  # Any default helm template values for this chart, e.g. a `scenarios` list
-├── pom.xml
-└── README.md
-```
-
-### Add Test Scenario
-
-Add a new test class under `\scenarios`. 
-
-Add class name in values.yaml.
-
-Build project and redeploy to cluster.
 
 
