@@ -4,6 +4,7 @@ metadata:
   labels:
     testInstance: "eventhubs-{{ .Stress.Scenario }}-{{ .Release.Name }}-{{ .Release.Revision }}"
     testName: eventhubs-{{ .Stress.Scenario }}
+    chaos: "true"
 spec:
   containers:
     - name: java-eventhubs-stress-test

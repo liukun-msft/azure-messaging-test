@@ -89,6 +89,55 @@ Stop and remove deployed package
 ```shell
 helm uninstall <stress test name> -n <stress test namespace>
 ```
+## Configure Faults
+
+[Chaos Mesh](https://chaos-mesh.org/) is used to configure faults against test jobs. There are two ways for the configuration, which are via the UI or via kubernetes manifests.
+
+### Chaos Dashboard
+
+```shell
+kubectl port-forward -n stress-infra svc/chaos-dashboard 2333:2333
+```
+Go to `localhost:2333` in browser and click `New experiment` to submit a fault experiment.
+
+### Chaos Manifest
+
+See [Chaos manifest](https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#chaos-manifest) for details.
+
+Below is an example for network loss. You can create a new yaml file with below content under `template/` folder to deploy on cluster.
+```shell
+apiVersion: chaos-mesh.org/v1alpha1
+kind: NetworkChaos
+metadata:
+  name: '{{ .Release.Name }}-{{ .Release.Revision }}'
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    experiment.chaos-mesh.org/pause: 'true'
+  labels:
+    scenario: 'stress'
+    release: '{{ .Release.Name }}'
+    revision: '{{ .Release.Revision }}'
+spec:
+  scheduler:
+    cron: '@every 30s'
+  duration: '10s'
+  action: loss
+  direction: to
+  externalTargets:
+    - 'servicebus.windows.net'
+  mode: one
+  selector:
+    labelSelectors:
+      testInstance: "eventhub-{{ .Release.Name }}-{{ .Release.Revision }}"
+      chaos: 'true'
+    namespaces:
+      - {{ .Release.Namespace }}
+    podPhaseSelectors:
+      - 'Running'
+  loss:
+    loss: '15'
+    correlation: '0'
+```
 
 ## Development
 
