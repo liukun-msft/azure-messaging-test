@@ -14,20 +14,20 @@ public class ProcessEvents extends EventHubsScenario {
 
     @Override
     public void run() {
-        String storageConnectionString = options.get(Constants.STORAGE_CONNECTION_STRING);
+        String storageConnStr = options.get(Constants.STORAGE_CONNECTION_STRING);
         String storageContainer = options.get(Constants.STORAGE_CONTAINER_NAME);
 
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
-                .connectionString(storageConnectionString)
+                .connectionString(storageConnStr)
                 .containerName(storageContainer)
                 .buildAsyncClient();
 
-        String eventHubsConnectionString = options.get(Constants.EVENT_HUBS_CONNECTION_STRING);
-        String eventHubName = options.get(Constants.EVENT_HUB_NAME);
+        String eventHubsConnStr = options.get(Constants.EVENT_HUBS_CONNECTION_STRING);
+        String eventHub = options.get(Constants.EVENT_HUB_NAME);
 
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
                 .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-                .connectionString(eventHubsConnectionString, eventHubName)
+                .connectionString(eventHubsConnStr, eventHub)
                 .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
                 .processEvent(eventContext -> {
                     System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "

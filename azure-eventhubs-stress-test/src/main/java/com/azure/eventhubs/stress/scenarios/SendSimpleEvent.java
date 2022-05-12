@@ -14,11 +14,11 @@ import java.util.List;
 public class SendSimpleEvent extends EventHubsScenario {
     @Override
     public void run() {
-        String eventHubsConnectString = options.get(Constants.EVENT_HUBS_CONNECTION_STRING);
-        String eventHubName = options.get(Constants.EVENT_HUB_NAME);
+        String eventHubsConnStr = options.get(Constants.EVENT_HUBS_CONNECTION_STRING);
+        String eventHub = options.get(Constants.EVENT_HUB_NAME);
 
         EventHubProducerClient producer = new EventHubClientBuilder()
-                .connectionString(eventHubsConnectString, eventHubName)
+                .connectionString(eventHubsConnStr, eventHub)
                 .buildProducerClient();
 
         EventDataBatch batch = producer.createBatch();
