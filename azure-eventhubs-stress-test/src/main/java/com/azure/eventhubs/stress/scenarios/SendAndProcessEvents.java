@@ -9,6 +9,8 @@ import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
@@ -21,6 +23,7 @@ import java.util.stream.IntStream;
 @Service("SendAndProcessEvents")
 public class SendAndProcessEvents extends EventHubsScenario{
 
+    private Logger logger = LoggerFactory.getLogger(SendAndProcessEvents.class);
     private static final int BATCH_NUMBER = 1000;
     private static final int EVENTS_NUMBER_EACH_BATCH = 500;
 
@@ -28,24 +31,40 @@ public class SendAndProcessEvents extends EventHubsScenario{
     public void run() {
         sendEvents().subscribe();
 
-        String storageConnectionString = options.get(Constants.STORAGE_CONNECTION_STRING);
+        String storageConnStr = options.get(Constants.STORAGE_CONNECTION_STRING);
         String storageContainer = options.get(Constants.STORAGE_CONTAINER_NAME);
 
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
-                .connectionString(storageConnectionString)
+                .connectionString(storageConnStr)
                 .containerName(storageContainer)
                 .buildAsyncClient();
 
-        String eventHubsConnectionString = options.get(Constants.EVENT_HUBS_CONNECTION_STRING);
-        String eventHubName = options.get(Constants.EVENT_HUB_NAME);
+        String eventHubsConnStr = options.get(Constants.EVENT_HUBS_CONNECTION_STRING);
+        String eventHub = options.get(Constants.EVENT_HUB_NAME);
 
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
                 .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
-                .connectionString(eventHubsConnectionString, eventHubName)
+                .connectionString(eventHubsConnStr, eventHub)
                 .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
                 .processEvent(eventContext -> {
-                    System.out.println("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
-                            + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
+                    logger.debug(
+                            "Processing event: Event Hub name = {}; consumer group name = {}; partition id = {}; sequence number = {}; offset = {}, enqueued time = {}",
+                            eventContext.getPartitionContext().getEventHubName(),
+                            eventContext.getPartitionContext().getConsumerGroup(),
+                            eventContext.getPartitionContext().getPartitionId(),
+                            eventContext.getEventData().getSequenceNumber(),
+                            eventContext.getEventData().getOffset(),
+                            eventContext.getEventData().getEnqueuedTime()
+                    );
+
+                    String metricKey = String.format("%s/%s/%s/%s",
+                            eventContext.getPartitionContext().getFullyQualifiedNamespace(),
+                            eventContext.getPartitionContext().getEventHubName(),
+                            eventContext.getPartitionContext().getConsumerGroup(),
+                            eventContext.getPartitionContext().getPartitionId()
+                    );
+
+                    rateMeter.add(metricKey,1);
                 })
                 .processError(errorContext -> {
                     System.out.println("Error occurred " + errorContext.getThrowable().getMessage());
