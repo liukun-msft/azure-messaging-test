@@ -20,9 +20,13 @@ This project is build on [azure-sdk-chaos](https://github.com/Azure/azure-sdk-to
 
 ### Add Test Scenario
 
-Add a new test class under `\scenarios`. 
+Add a new test class under `\scenarios`.
 
-Add class name in values.yaml.
+Extend `EventHubsScenarios` and implement test logic in `run()` method. 
+
+Configure new class as a bean and set the bean name same as the class name. 
+
+Add that class/bean name in values.yaml.
 
 Build project and redeploy to cluster.
 
@@ -110,6 +114,8 @@ kubectl describe pod -n <stress test namespace> <stress test pod name>
 Get stress test logs
 ```shell
 kubectl logs -n <stress test namespace> <stress test pod name>
+# Note that we may define multiple containers (for example, sender and receiver)
+kubectl logs -n <stress test namespace> <stress test pod name> -c <container name>
 ```
 
 Stop and remove deployed package

@@ -10,4 +10,8 @@ public class Constants {
     public static final String STORAGE_CONTAINER_NAME = "STORAGE_CONTAINER_NAME";
 
     public static final String METRIC_INTERVAL_SEC = "METRIC_INTERVAL_SEC";
+
+    public static final String UPDATE_CHECKPOINT = "UPDATE_CHECKPOINT";
+    public static final String RECEIVE_BATCH_SIZE = "RECEIVE_BATCH_SIZE";
+    public static final String RECEIVE_BATCH_TIMEOUT = "RECEIVE_BATCH_TIMEOUT";
 }

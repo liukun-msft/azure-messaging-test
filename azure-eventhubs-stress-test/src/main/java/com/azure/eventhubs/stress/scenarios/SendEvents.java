@@ -15,6 +15,9 @@ import static com.azure.eventhubs.stress.util.Constants.EVENT_HUB_NAME;
 
 @Service("SendEvents")
 public class SendEvents extends EventHubsScenario {
+    private final int sendTimes = 1000;
+    private final int eventNumber =  500;
+
     @Override
     public void run() {
         String eventHubConnStr = options.get(EVENT_HUBS_CONNECTION_STRING);
@@ -24,9 +27,9 @@ public class SendEvents extends EventHubsScenario {
                 .connectionString(eventHubConnStr, eventHub)
                 .buildAsyncProducerClient();
 
-        Flux.range(0, Integer.MAX_VALUE).concatMap(i -> {
+        Flux.range(0, sendTimes).concatMap(i -> {
             List<EventData> eventDataList = new ArrayList<>();
-            IntStream.range(0, 500).forEach(j -> {
+            IntStream.range(0, eventNumber).forEach(j -> {
                 eventDataList.add(new EventData("A"));
             });
             return client.send(eventDataList);

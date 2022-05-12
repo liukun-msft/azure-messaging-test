@@ -1,3 +1,2 @@
 scenarios:
-  - SendSimpleEvent
-  - ProcessEvents
+  - ProcessEventsWithUpdate

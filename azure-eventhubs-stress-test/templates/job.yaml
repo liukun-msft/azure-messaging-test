@@ -7,7 +7,15 @@ metadata:
     chaos: "true"
 spec:
   containers:
-    - name: java-eventhubs-stress-test
+    # Here it will create a sender container for each scenario.
+    # We'll check if we can configure it for each scenario: https://github.com/Azure/azure-sdk-tools/issues/3281
+    # Remove sender part if your test scenario don't need it.
+    - name: sender
+      image: {{ .Values.image }}
+      imagePullPolicy: Always
+      args: [ "--TEST_CLASS=SendEvents" ]
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
+    - name: receiver
       image: {{ .Values.image }}
       imagePullPolicy: Always
       args: [ "--TEST_CLASS={{ .Stress.Scenario }}" ]
