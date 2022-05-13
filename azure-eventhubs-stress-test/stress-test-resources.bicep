@@ -8,6 +8,7 @@ var subBaseName = substring(baseName, 0, min(length(baseName), 10))
 var eventHubsNamespaceName = '${subBaseName}-eventhubs'
 var eventHubName = 'test-event-hub'
 var eventHubAuthRulesName = '${subBaseName}-eventhub-rules'
+var secondEventHubName = 'test-event-hub2'
 
 // storage account must be between 3 and 24 characters in length and use numbers and lower-case letters only 
 var storageAccountName = replace('${subBaseName}account', '-', '')
@@ -43,6 +44,16 @@ resource eventHubAuthRules 'Microsoft.EventHub/namespaces/eventhubs/authorizatio
     ]
   }
 }
+
+resource secondEventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-11-01' = {
+  parent: eventHubsNamespace
+  name: secondEventHubName
+  properties: {
+    messageRetentionInDays: 1
+    partitionCount: 32
+  }
+}
+
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   name: storageAccountName
@@ -80,3 +91,5 @@ output EVENT_HUB_NAME string = eventHubName
 output EVENT_HUBS_CONNECTION_STRING string = eventHubsConnectionString
 output STORAGE_CONTAINER_NAME string = storageContainerName
 output STORAGE_CONNECTION_STRING string = storageConnectionString
+output SECOND_EVENT_HUB_NAME string = secondEventHubName
+output SECOND_EVENT_HUBS_CONNECTION_STRING string = eventHubsConnectionString

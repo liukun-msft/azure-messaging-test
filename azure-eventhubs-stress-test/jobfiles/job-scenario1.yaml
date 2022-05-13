@@ -1,0 +1,20 @@
+{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.java-eventhubs-scenario-1") -}}
+{{- define "stress.java-eventhubs-scenario-1" -}}
+metadata:
+  labels:
+    testInstance: "eventhubs-scenario-1-{{ .Release.Name }}-{{ .Release.Revision }}"
+    testName: eventhubs-scenario-1
+    chaos: "true"
+spec:
+  containers:
+    - name: sender
+      image: {{ .Values.image }}
+      imagePullPolicy: Always
+      args: [ "--TEST_CLASS=SendEvents" ]
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
+    - name: receiver
+      image: {{ .Values.image }}
+      imagePullPolicy: Always
+      args: [ "--TEST_CLASS=ProcessEventsWithOptions", "--UPDATE_CHECKPOINT=NO", "--NEED_SEND_EVENT_HUB=NO" ]
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
+{{- end -}}

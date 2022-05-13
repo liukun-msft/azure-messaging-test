@@ -30,6 +30,12 @@ Add that class/bean name in values.yaml.
 
 Build project and redeploy to cluster.
 
+### Test existing scenarios
+
+Because currently stress test framework doesn't support customized key/value for specific scenarios, we need copy different job files as a walkaround.
+
+Copy content of job-scenario* file from /jobfiles folder to job.yaml.
+
 
 ## Run locally
 
