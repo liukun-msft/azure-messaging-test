@@ -18,6 +18,6 @@ spec:
     - name: receiver
       image: {{ .Values.image }}
       imagePullPolicy: Always
-      args: [ "--TEST_CLASS={{ .Stress.Scenario }}" ]
+      args: [ "--TEST_CLASS={{ .Stress.Scenario }}" , "--UPDATE_CHECKPOINT=NO", "--NEED_SEND_EVENT_HUB=NO" ]
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}

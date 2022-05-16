@@ -178,6 +178,9 @@ spec:
     correlation: '0'
 ```
 
+## Application Insights
 
+Configuration for the application [Azure Monitor OpenTelemetry-based auto-instrumentation for Java applications](https://docs.microsoft.com/en-us/azure/azure-monitor/app/java-in-process-agent)
+-javaagent:src\main\resources\applicationinsights-agent-3.2.11.jar
 
 
