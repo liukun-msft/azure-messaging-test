@@ -13,11 +13,25 @@ spec:
     - name: sender
       image: {{ .Values.image }}
       imagePullPolicy: Always
-      args: [ "--TEST_CLASS=SendEvents" ]
+      command: ['sh', '-c']
+      args:
+        - |
+          set -a &&
+          source $ENV_FILE &&
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
+          "org.springframework.boot.loader.JarLauncher" \
+          --TEST_CLASS=SendEvents
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
     - name: receiver
       image: {{ .Values.image }}
       imagePullPolicy: Always
-      args: [ "--TEST_CLASS={{ .Stress.Scenario }}" , "--UPDATE_CHECKPOINT=NO", "--NEED_SEND_EVENT_HUB=NO" ]
+      command: ['sh', '-c']
+      args:
+        - |
+            set -a &&
+            source $ENV_FILE &&
+            java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
+            "org.springframework.boot.loader.JarLauncher" \
+            --TEST_CLASS={{ .Stress.Scenario }} --UPDATE_CHECKPOINT=NO --NEED_SEND_EVENT_HUB=NO
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}

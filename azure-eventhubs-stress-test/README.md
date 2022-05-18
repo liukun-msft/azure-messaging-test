@@ -28,6 +28,8 @@ Configure new class as a bean and set the bean name same as the class name.
 
 Add that class/bean name in values.yaml.
 
+Validate the arguments in job.yaml is correct.
+
 Build project and redeploy to cluster.
 
 ### Test existing scenarios
@@ -39,18 +41,20 @@ Copy content of job-scenario* file from /jobfiles folder to job.yaml.
 
 ## Run locally
 
-Update parameters in file `src/resources/.env`.
-
 Add program argument:
 
   ```shell
   --TEST_CLASS=<test class name>
   ```
 
-Add environment variable:
+Update required property values in application.properties:
 
   ```shell
-  ENV_FILE=.env
+  EVENT_HUB_NAME=<event hub name>
+  EVENT_HUBS_CONNECTION_STRING=<event hub connection string>
+
+  STORAGE_CONTAINER_NAME=<storage container name>
+  STORAGE_CONNECTION_STRING=<storage connection string>
   ```
 
 Start `EventHubsScenarioRunner`.
@@ -180,7 +184,11 @@ spec:
 
 ## Application Insights
 
-Configuration for the application [Azure Monitor OpenTelemetry-based auto-instrumentation for Java applications](https://docs.microsoft.com/en-us/azure/azure-monitor/app/java-in-process-agent)
+Follow page [Azure Monitor OpenTelemetry-based auto-instrumentation for Java applications](https://docs.microsoft.com/en-us/azure/azure-monitor/app/java-in-process-agent) to download the `applicationinsights-agent-3.2.11.jar`.
+
+Place the jar under `src\main\resources` folder.
+
 -javaagent:src\main\resources\applicationinsights-agent-3.2.11.jar
+
 
 

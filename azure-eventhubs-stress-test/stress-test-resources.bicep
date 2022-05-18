@@ -9,6 +9,7 @@ var eventHubsNamespaceName = '${subBaseName}-eventhubs'
 var eventHubName = 'test-event-hub'
 var eventHubAuthRulesName = '${subBaseName}-eventhub-rules'
 var secondEventHubName = 'test-event-hub2'
+var secondEventHubAuthRulesName = '${subBaseName}-eventhub-rules2'
 
 // storage account must be between 3 and 24 characters in length and use numbers and lower-case letters only 
 var storageAccountName = replace('${subBaseName}account', '-', '')
@@ -54,6 +55,18 @@ resource secondEventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-11-01' = {
   }
 }
 
+resource secondEventHubAuthRules 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2021-11-01' = {
+  parent: secondEventHub
+  name: secondEventHubAuthRulesName
+  properties:  {
+    rights: [
+      'Manage'
+      'Send'
+      'Listen'
+    ]
+  }
+}
+
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-09-01' = {
   name: storageAccountName
@@ -77,6 +90,7 @@ resource storageContainer 'Microsoft.Storage/storageAccounts/blobServices/contai
 // Construct eventhubs connection string
 var eventHubsVersion = eventHubsNamespace.apiVersion
 var eventHubsConnectionString = listkeys(eventHubAuthRulesName, eventHubsVersion).primaryConnectionString
+var secondEventHubsConnectionString = listkeys(secondEventHubAuthRulesName, eventHubsVersion).primaryConnectionString
 
 // Construct storage account connection string
 var endpointSuffix = environment().suffixes.storage
@@ -88,8 +102,8 @@ output RESOURCE_GROUP string = resourceGroup().name
 output EVENT_HUB_NAMESPACE string = eventHubsNamespaceName
 output EVENT_HUB_HOSTNAME string = '${eventHubsNamespaceName}.servicebus.windows.net'
 output EVENT_HUB_NAME string = eventHubName
-output EVENT_HUBS_CONNECTION_STRING string = eventHubsConnectionString
+output EVENT_HUBS_CONNECTION_STRING string = '"${eventHubsConnectionString}"'
 output STORAGE_CONTAINER_NAME string = storageContainerName
-output STORAGE_CONNECTION_STRING string = storageConnectionString
+output STORAGE_CONNECTION_STRING string = '"${storageConnectionString}"'
 output SECOND_EVENT_HUB_NAME string = secondEventHubName
-output SECOND_EVENT_HUBS_CONNECTION_STRING string = eventHubsConnectionString
+output SECOND_EVENT_HUBS_CONNECTION_STRING string = '"${secondEventHubsConnectionString}"'
