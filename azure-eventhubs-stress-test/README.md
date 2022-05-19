@@ -188,7 +188,8 @@ Follow page [Azure Monitor OpenTelemetry-based auto-instrumentation for Java app
 
 Place the jar under `src\main\resources` folder.
 
--javaagent:src\main\resources\applicationinsights-agent-3.2.11.jar
+Add jvm parameter when start -javaagent:src\main\resources\applicationinsights-agent-3.2.11.jar
+
 
 
 
