@@ -6,12 +6,10 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
-import com.azure.storage.blob.BlobContainerAsyncClient;
-import com.azure.storage.blob.BlobContainerClientBuilder;
 
 import java.time.Duration;
 
-public class ConsumeOneEvent {
+public class ConsumeOneEventSync {
     public static void main(String[] args) {
         EventHubConsumerClient consumer = new EventHubClientBuilder()
                 .connectionString(Credentials.eventHubsConnectionString, Credentials.eventHub)

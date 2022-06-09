@@ -15,12 +15,10 @@ public class SendOneMessage extends ServiceBusScenario {
 
     @Override
     public void run() {
-        String queue = cmdlineArgs.get("queue");
-
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
                 .connectionString(Credentials.serviceBusConnectionString)
                 .sender()
-                .queueName(queue)
+                .queueName(Credentials.serviceBusQueue)
                 .buildClient();
 
         List<ServiceBusMessage> messages = Arrays.asList(
