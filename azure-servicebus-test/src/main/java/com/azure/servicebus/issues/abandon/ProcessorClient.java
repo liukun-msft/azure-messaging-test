@@ -1,4 +1,4 @@
-package com.azure.servicebus.issues.order;
+package com.azure.servicebus.issues.abandon;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
@@ -13,8 +13,8 @@ import org.slf4j.LoggerFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class ProcessorAbandonMessage {
-    private static Logger log = LoggerFactory.getLogger(ProcessorAbandonMessage.class);
+public class ProcessorClient {
+    private static Logger log = LoggerFactory.getLogger(ProcessorClient.class);
 
     public static void main(String[] args) {
         Consumer<ServiceBusReceivedMessageContext> onMessage = context -> {
@@ -27,6 +27,7 @@ public class ProcessorAbandonMessage {
                         message.getSessionId(), message.getSequenceNumber(), order.orderNo, message.getMessageId());
                 //abandoning orders have ids as multiple of 4
                 if (order.getOrderNo() % 4 == 0) {
+                    TimeUnit.SECONDS.sleep(5);
                     context.abandon();
                 } else {
                     context.complete();
@@ -49,7 +50,7 @@ public class ProcessorAbandonMessage {
             }
         };
 
-        ServiceBusProcessorClient sessionProcessor = new ServiceBusClientBuilder()
+        ServiceBusProcessorClient processor = new ServiceBusClientBuilder()
                 .connectionString(Credentials.serviceBusConnectionString)
                 .processor()
                 .prefetchCount(0)
@@ -60,6 +61,6 @@ public class ProcessorAbandonMessage {
                 .buildProcessorClient();
 
         // Start the processor in the background
-        sessionProcessor.start();
+        processor.start();
     }
 }

@@ -1,4 +1,4 @@
-package com.azure.servicebus.issues.order;
+package com.azure.servicebus.issues.abandon;
 
 public class Order {
     public Integer orderNo;

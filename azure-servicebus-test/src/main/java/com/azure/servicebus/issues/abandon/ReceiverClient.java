@@ -1,4 +1,4 @@
-package com.azure.servicebus.issues.order;
+package com.azure.servicebus.issues.abandon;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
@@ -7,8 +7,8 @@ import com.azure.servicebus.util.Credentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class ReceiverAbandonMessage {
-    private static Logger log = LoggerFactory.getLogger(ReceiverAbandonMessage.class);
+public class ReceiverClient {
+    private static Logger log = LoggerFactory.getLogger(ReceiverClient.class);
 
     public static void main(String[] args) {
         ServiceBusSessionReceiverClient sessionReceiverClient = new ServiceBusClientBuilder()

@@ -1,4 +1,4 @@
-package com.azure.servicebus.issues.order;
+package com.azure.servicebus.issues.abandon;
 
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
@@ -9,7 +9,7 @@ import com.azure.servicebus.util.Credentials;
 import java.time.Duration;
 import java.util.List;
 
-public class SendOrder {
+public class SendOrderTwoSessions {
     private static final int SEND_MESSAGE_NUMBER = 10;
 
     public static void main(String[] args) {
@@ -26,18 +26,45 @@ public class SendOrder {
 
         for(int i = 0; i < SEND_MESSAGE_NUMBER; i++){
             List<ServiceBusMessage> messages = List.of(
-                    new ServiceBusMessage("" + i).setMessageId("" + i).setSessionId("test"));
+                    new ServiceBusMessage("" + i).setMessageId("" + i).setSessionId("test1"));
 
             sender.sendMessages(messages);
 
             System.out.println("Send Message id: " + i);
             try {
-                Thread.sleep(100);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
 
+        for(int i = 0; i < SEND_MESSAGE_NUMBER; i++){
+            List<ServiceBusMessage> messages = List.of(
+                    new ServiceBusMessage("" + i).setMessageId("" + i).setSessionId("test2"));
+
+            sender.sendMessages(messages);
+
+            System.out.println("Send Message id: " + i);
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for(int i = 0; i < SEND_MESSAGE_NUMBER; i++){
+            List<ServiceBusMessage> messages = List.of(
+                    new ServiceBusMessage("" + i).setMessageId("" + i).setSessionId("test3"));
+
+            sender.sendMessages(messages);
+
+            System.out.println("Send Message id: " + i);
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
         sender.close();
     }
 }

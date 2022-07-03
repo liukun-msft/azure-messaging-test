@@ -1,4 +1,4 @@
-package com.azure.servicebus.issues.order;
+package com.azure.servicebus.issues.abandon;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
@@ -10,11 +10,10 @@ import com.azure.servicebus.util.Credentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class SessionProcessorAbandonMessage {
-    private static Logger log = LoggerFactory.getLogger(SessionProcessorAbandonMessage.class);
+public class SessionProcessorOneSession {
+    private static Logger log = LoggerFactory.getLogger(SessionProcessorOneSession.class);
 
     public static void main(String[] args) {
         Consumer<ServiceBusReceivedMessageContext> onMessage = context -> {
@@ -55,11 +54,12 @@ public class SessionProcessorAbandonMessage {
                 .sessionProcessor()
                 .prefetchCount(0)
                 .queueName(Credentials.serviceBusQueue)
-                .maxConcurrentSessions(1)
+                .maxConcurrentSessions(2)
                 .processMessage(onMessage)
                 .processError(onError)
                 .disableAutoComplete()
                 .buildProcessorClient();
+
 
         // Start the processor in the background
         sessionProcessor.start();
