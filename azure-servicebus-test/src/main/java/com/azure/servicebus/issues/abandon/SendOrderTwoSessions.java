@@ -52,19 +52,6 @@ public class SendOrderTwoSessions {
             }
         }
 
-        for(int i = 0; i < SEND_MESSAGE_NUMBER; i++){
-            List<ServiceBusMessage> messages = List.of(
-                    new ServiceBusMessage("" + i).setMessageId("" + i).setSessionId("test3"));
-
-            sender.sendMessages(messages);
-
-            System.out.println("Send Message id: " + i);
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
         sender.close();
     }
 }
