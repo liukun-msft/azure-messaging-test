@@ -54,7 +54,7 @@ public class SessionProcessorOneSession {
                 .sessionProcessor()
                 .prefetchCount(0)
                 .queueName(Credentials.serviceBusQueue)
-                .maxConcurrentSessions(2)
+                .maxConcurrentSessions(1)
                 .processMessage(onMessage)
                 .processError(onError)
                 .disableAutoComplete()
