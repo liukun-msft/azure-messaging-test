@@ -14,7 +14,7 @@ public class SendMessageAfterSomeTime {
 
     public static void main(String[] args) {
         AmqpRetryOptions options = new AmqpRetryOptions();
-        options.setTryTimeout(Duration.ofSeconds(5));
+        options.setTryTimeout(Duration.ofSeconds(10));
 
 
         ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
@@ -27,21 +27,21 @@ public class SendMessageAfterSomeTime {
         ServiceBusMessage message1 = new ServiceBusMessage("Hello world 1");
         ServiceBusMessage message2 = new ServiceBusMessage("Hello world 2");
 
-
+        //Sleep some time to manually close network
         try {
             TimeUnit.SECONDS.sleep(10);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        //Close network to fail the first message delivery
+        //Now close network to fail the first message delivery,
         try {
             sender.sendMessage(message1).block();
         } catch (Exception e) {
             System.out.println(e);
         }
 
-        //Wait 30 minutes, reconnect network
+        //Wait over 30 minutes, reconnect network, and send the second message
         try {
             TimeUnit.MINUTES.sleep(31);
         } catch (InterruptedException e) {
