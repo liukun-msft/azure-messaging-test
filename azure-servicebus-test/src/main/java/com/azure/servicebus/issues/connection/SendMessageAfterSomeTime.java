@@ -41,7 +41,7 @@ public class SendMessageAfterSomeTime {
             System.out.println(e);
         }
 
-        //Wait 30 minutes
+        //Wait 30 minutes, reconnect network
         try {
             TimeUnit.MINUTES.sleep(31);
         } catch (InterruptedException e) {
