@@ -9,6 +9,9 @@ import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.servicebus.util.Credentials;
 import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
@@ -32,20 +35,31 @@ public class ReceiveMessageAfterSomeTime {
                 .subscriptionName(Credentials.serviceBusSubscription)
                 .buildAsyncClient();
 
-        Disposable subscription = receiver.receiveMessages()
+//        Flux.using(() -> true,
+//                        client -> receiver.receiveMessages(),
+//                        client -> System.err.println("failure"))
+//                .retryWhen(
+//                        Retry.fixedDelay(Long.MAX_VALUE, Duration.ofSeconds(5))
+//                                .filter(throwable -> {
+//                                    System.err.println("Current LowLevelClient's retry exhausted or a non-retryable error occurred." +
+//                                            throwable);
+//                                    return true;
+//                                }))
+        Disposable disposable = receiver.receiveMessages()
+                .onErrorResume(error -> {
+                    System.out.println("Encounter error when receive message: " + error);
+                    return receiver.receiveMessages();
+                })
                 .subscribe(message -> {
                             System.out.printf("Sequence #: %s. Contents: %s%n", message.getSequenceNumber(),
                                     message.getBody());
                             receiver.complete(message).block();
-                        },
-                        error -> {
-                            System.err.println("Error occurred while receiving message: " + error);
                         });
 
-        countdownLatch.await(30, TimeUnit.MINUTES);
+        countdownLatch.await(1, TimeUnit.HOURS);
 
-        subscription.dispose();
-
+        disposable.dispose();
         receiver.close();
     }
+
 }

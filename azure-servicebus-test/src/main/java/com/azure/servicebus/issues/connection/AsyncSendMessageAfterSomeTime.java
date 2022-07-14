@@ -9,7 +9,7 @@ import com.azure.servicebus.util.Credentials;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
-public class SendMessageAfterSomeTime {
+public class AsyncSendMessageAfterSomeTime {
 
 
     public static void main(String[] args) {
