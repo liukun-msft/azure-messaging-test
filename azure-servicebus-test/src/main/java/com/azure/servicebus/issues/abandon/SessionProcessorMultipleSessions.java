@@ -12,9 +12,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.function.Consumer;
 
-public class SessionProcessorTwoSessions {
+public class SessionProcessorMultipleSessions {
 
-    private static Logger log = LoggerFactory.getLogger(SessionProcessorTwoSessions.class);
+    private static Logger log = LoggerFactory.getLogger(SessionProcessorMultipleSessions.class);
 
     public static void main(String[] args) {
         Consumer<ServiceBusReceivedMessageContext> onMessage = context -> {

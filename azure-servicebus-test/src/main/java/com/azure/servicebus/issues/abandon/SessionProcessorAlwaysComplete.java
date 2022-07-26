@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import java.util.function.Consumer;
 
 public class SessionProcessorAlwaysComplete {
-    private static Logger log = LoggerFactory.getLogger(SessionProcessorTwoSessions.class);
+    private static Logger log = LoggerFactory.getLogger(SessionProcessorMultipleSessions.class);
 
     public static void main(String[] args) {
         Consumer<ServiceBusReceivedMessageContext> onMessage = context -> {
@@ -48,7 +48,8 @@ public class SessionProcessorAlwaysComplete {
                 .sessionProcessor()
                 .prefetchCount(0)
                 .queueName(Credentials.serviceBusQueue)
-                .maxConcurrentSessions(2)
+                .maxConcurrentSessions(1)
+                .maxConcurrentCalls(2)
                 .processMessage(onMessage)
                 .processError(onError)
                 .disableAutoComplete()

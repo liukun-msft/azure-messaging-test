@@ -25,46 +25,22 @@ public class SendOrderMultipleSessions {
                 .buildClient();
 
 
-        for(int i = 0; i < SEND_MESSAGE_NUMBER; i++){
-            List<ServiceBusMessage> messages = List.of(
-                    new ServiceBusMessage("" + i).setMessageId("" + i).setSessionId("test1"));
+        for(int j = 0; j < SESSION_NUMBER; j++){
+            for(int i = 0; i < SEND_MESSAGE_NUMBER; i++){
+                List<ServiceBusMessage> messages = List.of(
+                        new ServiceBusMessage("" + i).setMessageId("" + i).setSessionId("test" + j));
 
-            sender.sendMessages(messages);
+                sender.sendMessages(messages);
 
-            System.out.println("Send Message id: " + i);
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                System.out.println("Send Message id: " + i);
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
-        for(int i = 0; i < SEND_MESSAGE_NUMBER; i++){
-            List<ServiceBusMessage> messages = List.of(
-                    new ServiceBusMessage("" + i).setMessageId("" + i).setSessionId("test2"));
-
-            sender.sendMessages(messages);
-
-            System.out.println("Send Message id: " + i);
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        for(int i = 0; i < SEND_MESSAGE_NUMBER; i++){
-            List<ServiceBusMessage> messages = List.of(
-                    new ServiceBusMessage("" + i).setMessageId("" + i).setSessionId("test2"));
-
-            sender.sendMessages(messages);
-
-            System.out.println("Send Message id: " + i);
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
         sender.close();
     }
 }
