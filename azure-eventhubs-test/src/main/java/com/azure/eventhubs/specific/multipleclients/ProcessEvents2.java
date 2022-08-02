@@ -1,4 +1,4 @@
-package com.azure.eventhubs.common;
+package com.azure.eventhubs.specific.multipleclients;
 
 import com.azure.eventhubs.util.Credentials;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
@@ -8,9 +8,7 @@ import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 
-import java.util.concurrent.TimeUnit;
-
-public class ProcessEvents {
+public class ProcessEvents2 {
     public static void main(String[] args) throws InterruptedException {
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
                 .connectionString(Credentials.storageConnectionString)
@@ -33,9 +31,9 @@ public class ProcessEvents {
                 .buildEventProcessorClient();
 
         eventProcessorClient.start();
-
-        TimeUnit.SECONDS.sleep(2);
-
-        eventProcessorClient.stop();
+//
+//        TimeUnit.SECONDS.sleep(2);
+//
+//        eventProcessorClient.stop();
     }
 }

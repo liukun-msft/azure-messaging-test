@@ -1,13 +1,9 @@
 package com.azure.eventhubs.common;
 
-import com.azure.core.util.IterableStream;
 import com.azure.eventhubs.util.Credentials;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
-import com.azure.messaging.eventhubs.models.EventPosition;
-import com.azure.messaging.eventhubs.models.PartitionEvent;
 
-import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 public class ConsumeEvents {
