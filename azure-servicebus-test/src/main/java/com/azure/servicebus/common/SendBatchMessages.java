@@ -7,11 +7,13 @@ import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.servicebus.util.Credentials;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 
-public class SendMessages {
+public class SendBatchMessages {
 
-    private static final int SEND_MESSAGE_NUMBER = 1000;
+    private static final int SEND_BATCH_NUMBER = 100;
+    private static final int BATCH_MESSAGE_NUMBER = 100;
 
     public static void main(String[] args) {
         AmqpRetryOptions options = new AmqpRetryOptions();
@@ -25,12 +27,15 @@ public class SendMessages {
                 .buildClient();
 
 
-        for (int i = 0; i < SEND_MESSAGE_NUMBER; i++) {
-            ServiceBusMessage message = new ServiceBusMessage("Hello world").setMessageId("" + i);
+        for (int i = 0; i < SEND_BATCH_NUMBER; i++) {
+            List<ServiceBusMessage> messages = new ArrayList<>();
+            for(int j = 0; j < BATCH_MESSAGE_NUMBER; j++){
+                messages.add(new ServiceBusMessage("Hello world").setMessageId("" + i * BATCH_MESSAGE_NUMBER + j));
+            }
 
-            sender.sendMessage(message);
+            sender.sendMessages(messages);
 
-            System.out.println("Send Message id: " + i);
+            System.out.println("Send Message times: " + i);
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
