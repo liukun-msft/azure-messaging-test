@@ -30,7 +30,7 @@ public class SendBatchMessages {
         for (int i = 0; i < SEND_BATCH_NUMBER; i++) {
             List<ServiceBusMessage> messages = new ArrayList<>();
             for(int j = 0; j < BATCH_MESSAGE_NUMBER; j++){
-                messages.add(new ServiceBusMessage("Hello world").setMessageId("" + i * BATCH_MESSAGE_NUMBER + j));
+                messages.add(new ServiceBusMessage("Hello world").setMessageId(String.valueOf(i * BATCH_MESSAGE_NUMBER + j)));
             }
 
             sender.sendMessages(messages);
