@@ -16,51 +16,65 @@ import java.util.function.Consumer;
 
 public class ReceiveAndScheduleMessage {
     private static ServiceBusSenderClient sender;
+    private static ServiceBusClientBuilder builder;
+    private static int scheduleTimes = 0;
 
     public static void main(String[] args) {
-        AmqpRetryOptions options = new AmqpRetryOptions();
-        options.setTryTimeout(Duration.ofMinutes(1L));
 
-        sender = new ServiceBusClientBuilder()
-                .connectionString(Credentials.serviceBusConnectionString)
-                .retryOptions(options)
-                .sender()
-                .queueName(Credentials.serviceBusQueue)
-                .buildClient();
+        builder = new ServiceBusClientBuilder()
+                .connectionString(Credentials.serviceBusConnectionString);
 
         startProcessor();
+    }
+
+    private static void buildSender() {
+        sender = builder.sender()
+                .topicName(Credentials.serviceBusQueue)
+                .buildClient();
+
 
     }
 
     private static void scheduleMessage() {
         ServiceBusMessage messages = new ServiceBusMessage("Hello world");
+        scheduleTimes++;
 
-        OffsetDateTime scheduleTime = OffsetDateTime.now().plusSeconds(30);
+        OffsetDateTime scheduleTime = OffsetDateTime.now().plusSeconds(40);
         sender.scheduleMessage(messages, scheduleTime);
         System.out.println("Send Message");
     }
 
-    private static void startProcessor(){
+    private static void startProcessor() {
         Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
+            System.out.println(messageContext.getMessage().getMessageId());
             try {
-                System.out.println(messageContext.getMessage().getMessageId());
+                if (scheduleTimes < 1) {
+                    TimeUnit.SECONDS.sleep(1);
+                    scheduleMessage();
+                    TimeUnit.SECONDS.sleep(31);
+                } else {
+                    TimeUnit.SECONDS.sleep(31);
+                    scheduleMessage();
+                    TimeUnit.SECONDS.sleep(1);
 
-                TimeUnit.MINUTES.sleep(16);
-
-                scheduleMessage();
-                messageContext.complete();
-            } catch (Exception ex) {
-                messageContext.abandon();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+
+            messageContext.complete();
+
         };
 
         Consumer<ServiceBusErrorContext> processError = errorContext -> {
             System.err.println("Error occurred while receiving message: " + errorContext.getException());
         };
 
-        ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
-                .connectionString(Credentials.serviceBusConnectionString)
+        buildSender();
+
+        ServiceBusProcessorClient processorClient = builder
                 .processor()
+//                .maxConcurrentCalls(2)
                 .disableAutoComplete()
                 .queueName(Credentials.serviceBusQueue)
                 .processMessage(processMessage)
