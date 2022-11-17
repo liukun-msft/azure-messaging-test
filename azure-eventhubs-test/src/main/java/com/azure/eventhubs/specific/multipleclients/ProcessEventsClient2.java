@@ -8,7 +8,7 @@ import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 
-public class ProcessEvents3 {
+public class ProcessEventsClient2 {
     public static void main(String[] args) throws InterruptedException {
         BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
                 .connectionString(Credentials.storageConnectionString)
