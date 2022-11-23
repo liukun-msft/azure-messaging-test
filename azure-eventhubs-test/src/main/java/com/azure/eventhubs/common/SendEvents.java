@@ -11,7 +11,7 @@ import java.util.List;
 
 public class SendEvents {
 
-    private final static int EVENT_NUMBER = 100;
+    private final static int EVENT_NUMBER = 1000000;
 
     public static void main(String[] args) {
 
