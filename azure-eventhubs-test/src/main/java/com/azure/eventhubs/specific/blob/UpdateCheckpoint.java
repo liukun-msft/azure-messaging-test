@@ -34,8 +34,5 @@ public class UpdateCheckpoint {
             System.out.println("Sleep 3");
             TimeUnit.SECONDS.sleep(3);
         }
-
-
-
     }
 }
