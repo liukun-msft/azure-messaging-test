@@ -1,9 +1,7 @@
 package com.azure.servicebus.spring;
 
 import com.azure.servicebus.spring.scenarios.ServiceBusScenario;
-import com.azure.servicebus.spring.util.CmdlineArgs;
-import com.azure.servicebus.spring.util.Constants;
-import com.azure.servicebus.spring.util.Credentials;
+import com.azure.servicebus.spring.util.ScenarioOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -12,7 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 
-import javax.annotation.PostConstruct;
 import java.util.Objects;
 
 
@@ -23,15 +20,10 @@ public class ServiceBusScenarioRunner implements ApplicationRunner {
     protected ApplicationContext applicationContext;
 
     @Autowired
-    protected CmdlineArgs cmdlineArgs;
+    protected ScenarioOptions options;
 
     @Autowired
     protected Environment environment;
-
-    @PostConstruct
-    public void setProperties(){
-        Credentials.setCredentials(environment);
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(ServiceBusScenarioRunner.class, args);
@@ -39,8 +31,9 @@ public class ServiceBusScenarioRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        String scenarioName = Objects.requireNonNull(cmdlineArgs.get(Constants.SCENARIO_OPTION), "scenario should be provide, for example: --scenario=SendSimpleMessage");
-        ServiceBusScenario scenario = (ServiceBusScenario) applicationContext.getBean(scenarioName);
+        String className = Objects.requireNonNull(options.getTestClass(), "The test class should be provided, please add --TEST_CLASS=<your test class> as start argument\"");
+        ServiceBusScenario scenario = null;
+        scenario = (ServiceBusScenario) applicationContext.getBean(className);
         scenario.run();
     }
 }

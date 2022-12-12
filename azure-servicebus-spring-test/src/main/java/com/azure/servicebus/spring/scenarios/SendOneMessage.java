@@ -3,7 +3,6 @@ package com.azure.servicebus.spring.scenarios;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
-import com.azure.servicebus.spring.util.Credentials;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -16,9 +15,9 @@ public class SendOneMessage extends ServiceBusScenario {
     @Override
     public void run() {
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-                .connectionString(Credentials.serviceBusConnectionString)
+                .connectionString(options.getServicebusConnectionString())
                 .sender()
-                .queueName(Credentials.serviceBusQueue)
+                .queueName(options.getServicebusQueueName())
                 .buildClient();
 
         List<ServiceBusMessage> messages = Arrays.asList(
