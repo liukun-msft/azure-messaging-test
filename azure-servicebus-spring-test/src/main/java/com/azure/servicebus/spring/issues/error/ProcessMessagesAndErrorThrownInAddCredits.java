@@ -8,6 +8,7 @@ import com.azure.servicebus.spring.scenarios.ServiceBusScenario;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.function.Consumer;
 
 @Component("ProcessMessagesAndErrorThrownInAddCredits")
@@ -33,7 +34,8 @@ public class ProcessMessagesAndErrorThrownInAddCredits extends ServiceBusScenari
         ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
                 .connectionString(options.getServicebusConnectionString())
                 .processor()
-                .maxConcurrentCalls(10)
+                .maxConcurrentCalls(1)
+                .maxAutoLockRenewDuration(Duration.ofSeconds(0))
                 .topicName(options.getServicebusTopicName())
                 .subscriptionName(options.getServicebusSubscriptionName())
                 .processMessage(processMessage)
