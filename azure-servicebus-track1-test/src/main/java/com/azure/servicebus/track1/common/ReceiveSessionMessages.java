@@ -15,8 +15,8 @@ public class ReceiveSessionMessages {
         IMessageReceiver receiver;
 
         try {
-            receiver = ClientFactory.acceptSessionFromConnectionString(
-                    Credentials.serviceBusConnectionString, "sessionqueue", ReceiveMode.PEEKLOCK);
+            receiver = ClientFactory.acceptSessionFromConnectionStringBuilder(
+                    new ConnectionStringBuilder(Credentials.serviceBusConnectionString, "sessionqueue"), "1", ReceiveMode.PEEKLOCK);
 
             IMessage receivedMessage = receiver.receive(Duration.ofSeconds(5));
 
