@@ -13,13 +13,27 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 public class ProcessMessages {
-    private static CountDownLatch latch = new CountDownLatch(1);
+    private static final CountDownLatch latch = new CountDownLatch(1);
+
+    private static final int PREFETCH_COUNT = 0;
+    private static final int MAX_CONCURRENT_CALLS = 10;
+    private static final int MAX_LOCK_RENEW_DURATION_IN_MINUTES = 0;
+    private static final int PROCESS_TIME_IN_SECONDS = 1;
 
     public static void main(String[] args) throws InterruptedException {
         Consumer<ServiceBusReceivedMessageContext> processMessage = messageContext -> {
             try {
-                System.out.println(messageContext.getMessage().getMessageId());
+                System.out.printf("Thread name [%s] - received message id [%s], message sequence number [%s] " +
+                                ",  message token [%s], message content [%s] \n",
+                        Thread.currentThread().getName(),
+                        messageContext.getMessage().getMessageId(),
+                        messageContext.getMessage().getSequenceNumber(),
+                        messageContext.getMessage().getLockToken(),
+                        messageContext.getMessage().getBody());
+
                 // other message processing code
+                TimeUnit.SECONDS.sleep(PROCESS_TIME_IN_SECONDS);
+
                 messageContext.complete();
             } catch (Exception ex) {
                 messageContext.abandon();
@@ -33,9 +47,11 @@ public class ProcessMessages {
         ServiceBusProcessorClient processorClient = new ServiceBusClientBuilder()
                 .connectionString(Credentials.serviceBusConnectionString)
                 .processor()
-                .maxAutoLockRenewDuration(Duration.ZERO)
-                .disableAutoComplete()
                 .queueName(Credentials.serviceBusQueue)
+                .prefetchCount(PREFETCH_COUNT)
+                .maxConcurrentCalls(MAX_CONCURRENT_CALLS)
+                .maxAutoLockRenewDuration(Duration.ofMinutes(MAX_LOCK_RENEW_DURATION_IN_MINUTES))
+                .disableAutoComplete()
                 .processMessage(processMessage)
                 .processError(processError)
                 .buildProcessorClient();
