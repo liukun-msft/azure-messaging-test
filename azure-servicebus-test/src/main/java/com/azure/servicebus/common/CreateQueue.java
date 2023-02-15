@@ -17,7 +17,7 @@ public class CreateQueue {
                 .httpLogOptions(logOptions)
                 .buildClient();
 
-        String queueName = "stress-test-queue";
+        String queueName = "test-queue";
 
         for(int i = 1; i <= 20; i++){
             client.createQueue(queueName + i);

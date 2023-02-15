@@ -8,13 +8,13 @@ import com.azure.servicebus.util.Credentials;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ScheduleMessage {
     private static final int SEND_MESSAGE_NUMBER = 10;
     private static final int SCHEDULE_GAP_IN_SECONDS = 30;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         AmqpRetryOptions options = new AmqpRetryOptions();
         options.setTryTimeout(Duration.ofMinutes(1L));
 
@@ -33,11 +33,9 @@ public class ScheduleMessage {
             sender.scheduleMessage(messages, scheduleTime);
 
             System.out.println("Send Message id: " + i);
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+
+            System.out.printf("Sleep [%s] seconds \n", SCHEDULE_GAP_IN_SECONDS);
+            TimeUnit.SECONDS.sleep(SCHEDULE_GAP_IN_SECONDS);
         }
 
         sender.close();
